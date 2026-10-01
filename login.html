@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#251440">
+  <title>Iniciar sesión | Karin's Market</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="login-wrap">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-3"></div>
+
+  <section class="login-card" aria-labelledby="login-titulo">
+    <div class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8V6a6 6 0 0 1 12 0v2"/><path d="M4 8h16l-1.2 12.2A2 2 0 0 1 16.82 22H7.18a2 2 0 0 1-1.98-1.8L4 8z"/></svg>
+      </span>
+      <span class="logo-text">Karin's<em>Market</em></span>
+    </div>
+
+    <!-- ============ VISTA: INICIAR SESIÓN ============ -->
+    <div id="vista-login">
+      <h1 id="login-titulo">Inicia sesión</h1>
+      <p class="login-sub">Entra con tu usuario para ver los productos y armar tu carrito.</p>
+
+      <form onsubmit="iniciarSesion(event)" novalidate>
+        <div class="login-campo">
+          <label for="usuario">Usuario</label>
+          <div class="login-input">
+            <input type="text" id="usuario" placeholder="Ingrese su usuario"
+                   autocomplete="username" autocapitalize="none" spellcheck="false" autofocus>
+          </div>
+        </div>
+
+        <div class="login-campo">
+          <label for="password">Contraseña</label>
+          <div class="login-input">
+            <input type="password" id="password" placeholder="Ingrese su contraseña"
+                   autocomplete="current-password">
+            <button type="button" class="login-ver" id="btnVer" onclick="alternarPassword('password', 'btnVer')"
+                    aria-controls="password" aria-pressed="false">Mostrar</button>
+          </div>
+        </div>
+
+        <button type="button" class="login-enlace" onclick="mostrarVista('recuperar')">¿Olvidaste tu contraseña?</button>
+
+        <button type="submit" class="accent login-enviar" id="btnIngresar">Iniciar sesión</button>
+
+        <p id="mensaje" class="login-mensaje" role="status" aria-live="polite"></p>
+      </form>
+
+      <div class="login-demo">
+        Cuenta de prueba: <strong>emilys</strong> / <strong>emilyspass</strong><br>
+        <button type="button" onclick="usarCuentaDemo()">Rellenar datos</button>
+      </div>
+    </div>
+
+    <!-- ============ VISTA: RECUPERAR CONTRASEÑA ============ -->
+    <div id="vista-recuperar" hidden>
+      <div class="pasos" aria-hidden="true"><span id="paso-1" class="hecho"></span><span id="paso-2"></span><span id="paso-3"></span></div>
+
+      <!-- Paso 1: identificar la cuenta -->
+      <form id="rec-form-1" onsubmit="recuperarPaso1(event)" novalidate>
+        <h2 class="vista-titulo">Recupera tu contraseña</h2>
+        <p class="login-sub">Escribe tu usuario o tu correo y te enviaremos un código de verificación.</p>
+        <div class="login-campo">
+          <label for="rec-id">Usuario o correo</label>
+          <div class="login-input">
+            <input type="text" id="rec-id" placeholder="emilys o correo@dominio.com"
+                   autocomplete="username" autocapitalize="none" spellcheck="false">
+          </div>
+        </div>
+        <button type="submit" class="accent login-enviar" id="rec-btn-1">Enviar código</button>
+      </form>
+
+      <!-- Paso 2: código de verificación -->
+      <form id="rec-form-2" onsubmit="recuperarPaso2(event)" novalidate hidden>
+        <h2 class="vista-titulo">Revisa tu correo</h2>
+        <p class="login-sub" id="rec-info"></p>
+        <div class="demo-box" id="rec-demo"></div>
+        <div class="login-campo">
+          <label for="rec-codigo">Código de 6 dígitos</label>
+          <div class="login-input">
+            <input type="text" id="rec-codigo" class="codigo" inputmode="numeric" maxlength="6"
+                   placeholder="······" autocomplete="one-time-code">
+          </div>
+        </div>
+        <button type="submit" class="accent login-enviar">Verificar código</button>
+      </form>
+
+      <!-- Paso 3: nueva contraseña -->
+      <form id="rec-form-3" onsubmit="recuperarPaso3(event)" novalidate hidden>
+        <h2 class="vista-titulo">Crea tu nueva contraseña</h2>
+        <p class="login-sub">Usa al menos 8 caracteres, con mayúscula, minúscula y número.</p>
+
+        <div class="login-campo">
+          <label for="rec-pass">Nueva contraseña</label>
+          <div class="login-input">
+            <input type="password" id="rec-pass" placeholder="Nueva contraseña"
+                   autocomplete="new-password" oninput="evaluarFuerza()">
+            <button type="button" class="login-ver" id="btnVer2" onclick="alternarPassword('rec-pass', 'btnVer2')"
+                    aria-controls="rec-pass" aria-pressed="false">Mostrar</button>
+          </div>
+        </div>
+        <div class="fuerza" id="rec-fuerza" data-nivel="0" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+        <p class="fuerza-txt" id="rec-fuerza-txt">Seguridad: escribe una contraseña</p>
+
+        <div class="login-campo">
+          <label for="rec-pass2">Confirmar contraseña</label>
+          <div class="login-input">
+            <input type="password" id="rec-pass2" placeholder="Repite la contraseña" autocomplete="new-password">
+          </div>
+        </div>
+
+        <div class="demo-box">Modo demostración: DummyJSON no guarda cambios, por eso la cuenta de prueba seguirá usando su contraseña original.</div>
+
+        <button type="submit" class="accent login-enviar">Guardar contraseña</button>
+      </form>
+
+      <p id="rec-mensaje" class="login-mensaje" role="status" aria-live="polite"></p>
+      <button type="button" class="login-volver" onclick="mostrarVista('login')">← Volver a iniciar sesión</button>
+    </div>
+  </section>
+
+  <p class="login-pie">© 2026 Karin's Market — Proyecto académico de consumo de API con JavaScript.</p>
+</div>
+
+<script src="script_login.js"></script>
+</body>
+</html>

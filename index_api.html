@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#251440">
+  <title>Karin's Market | Supermercado en línea</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <span>Envíos a toda Colombia</span>
+    <span>Envío gratis desde $50</span>
+    <span>Pago 100% seguro</span>
+  </div>
+</div>
+
+<header class="navbar">
+  <div class="navbar-inner">
+    <div class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8V6a6 6 0 0 1 12 0v2"/><path d="M4 8h16l-1.2 12.2A2 2 0 0 1 16.82 22H7.18a2 2 0 0 1-1.98-1.8L4 8z"/></svg>
+      </span>
+      <span class="logo-text">Karin's<em>Market</em></span>
+    </div>
+
+    <div class="search-bar">
+      <input type="text" id="buscar" placeholder="Busca entre miles de productos..." aria-label="Buscar productos">
+      <button class="secondary" onclick="buscarProductos()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>
+        <span class="btn-label">Buscar</span>
+      </button>
+    </div>
+
+    <button class="cart-toggle" onclick="toggleCarrito()" aria-label="Abrir carrito">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8V6a6 6 0 0 1 12 0v2"/><path d="M4 8h16l-1.2 12.2A2 2 0 0 1 16.82 22H7.18a2 2 0 0 1-1.98-1.8L4 8z"/></svg>
+      <span class="btn-label">Mi Carrito</span>
+      <span id="contador-carrito" class="contador">0</span>
+    </button>
+
+    <div class="user-menu" id="user-menu">
+      <button type="button" class="user-btn" id="user-btn" onclick="togglePerfil()"
+              aria-haspopup="true" aria-expanded="false" aria-controls="perfil-panel">
+        <img id="fotoUsuario" class="user-avatar" alt="" width="34" height="34">
+        <span id="nombreUsuario" class="user-nombre"></span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+
+      <div class="perfil-panel" id="perfil-panel" role="dialog" aria-label="Mi perfil" hidden>
+        <div class="perfil-avatar">
+          <img id="perfilFoto" class="perfil-foto" alt="Foto de perfil" width="76" height="76">
+          <button type="button" class="perfil-cam" onclick="document.getElementById('inputFoto').click()" aria-label="Cambiar foto de perfil" title="Cambiar foto">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </button>
+          <input type="file" id="inputFoto" accept="image/png,image/jpeg,image/webp" hidden onchange="cambiarFoto(event)">
+        </div>
+        <button type="button" class="link-btn" id="btnQuitarFoto" onclick="quitarFoto()" hidden>Quitar mi foto</button>
+
+        <p class="perfil-saludo" id="perfilSaludo"></p>
+
+        <dl class="perfil-datos">
+          <dt>Nombre</dt><dd id="perfilNombre"></dd>
+          <dt>Apellido</dt><dd id="perfilApellido"></dd>
+          <dt>Usuario</dt><dd id="perfilUsername"></dd>
+          <dt>Correo</dt><dd id="perfilCorreo"></dd>
+        </dl>
+
+        <div class="perfil-acciones">
+          <button type="button" class="secondary" onclick="abrirPedidos()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            Mis compras <span class="badge-n" id="contador-pedidos">0</span>
+          </button>
+          <button type="button" class="secondary cerrar-sesion" onclick="cerrarSesion()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+            Cerrar sesión
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="cat-nav" aria-label="Pasillos">
+  <div class="categorias" id="categorias"></div>
+</nav>
+
+<section class="hero-banner">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-3"></div>
+  <div class="hero-content">
+    <p class="eyebrow" id="saludoHero">Tu súper en línea</p>
+    <h1>Bienvenida a Karin's Market</h1>
+    <p class="subtitle">Tecnología, hogar, belleza, snacks y mucho más — todo al mejor precio y en un solo lugar.</p>
+    <button class="accent" onclick="listarProductos()">Explorar catálogo</button>
+
+    <div class="badges">
+      <span class="badge-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l1.9 4.9 5.1.5-4 3.5 1.2 5.1-4.2-2.9-4.2 2.9 1.2-5.1-4-3.5 5.1-.5z"/></svg>
+        Los mejores precios todos los días
+      </span>
+      <span class="badge-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        Todos los pasillos en un solo lugar
+      </span>
+      <span class="badge-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 4v6c0 5-3.4 8.7-8 10-4.6-1.3-8-5-8-10V6z"/></svg>
+        Compra fácil y segura
+      </span>
+    </div>
+  </div>
+</section>
+
+<main>
+  <div class="toolbar">
+    <p id="contador-productos">Mostrando productos...</p>
+    <select id="ordenar" onchange="ordenarProductos()" aria-label="Ordenar por precio">
+      <option value="">Ordenar por precio</option>
+      <option value="asc">Menor a mayor</option>
+      <option value="desc">Mayor a menor</option>
+    </select>
+  </div>
+  <div id="resultado"></div>
+</main>
+
+<div id="carrito-overlay" class="carrito-overlay" onclick="cerrarCarrito()"></div>
+<aside id="carrito-panel" class="cart-drawer" aria-label="Carrito de compras">
+  <div class="cart-drawer-header">
+    <h2>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8V6a6 6 0 0 1 12 0v2"/><path d="M4 8h16l-1.2 12.2A2 2 0 0 1 16.82 22H7.18a2 2 0 0 1-1.98-1.8L4 8z"/></svg>
+      Mi Carrito
+    </h2>
+    <button class="cerrar-carrito" onclick="cerrarCarrito()" aria-label="Cerrar carrito">✕</button>
+  </div>
+  <ul id="carrito"></ul>
+  <div id="envio-progreso" class="envio"></div>
+  <p id="total">Total <span>$0.00</span></p>
+  <button id="comprar-btn" class="accent" onclick="finalizarCompra()">Finalizar compra</button>
+  <button id="vaciar-btn" class="secondary" onclick="vaciarCarrito()">Vaciar carrito</button>
+  <div id="mensaje-compra" class="mensaje-compra" aria-live="polite"></div>
+</aside>
+
+<div class="modal" id="modal-pedidos" role="dialog" aria-modal="true" aria-labelledby="modal-titulo" hidden onclick="if (event.target === this) cerrarPedidos()">
+  <div class="modal-caja">
+    <div class="modal-head">
+      <h2 id="modal-titulo">Mis compras</h2>
+      <button class="cerrar-carrito" onclick="cerrarPedidos()" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="modal-body" id="lista-pedidos"></div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="logo footer-logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8V6a6 6 0 0 1 12 0v2"/><path d="M4 8h16l-1.2 12.2A2 2 0 0 1 16.82 22H7.18a2 2 0 0 1-1.98-1.8L4 8z"/></svg>
+      </span>
+      <span class="logo-text">Karin's<em>Market</em></span>
+    </div>
+    <p>Tu supermercado en línea, con lo mejor de cada pasillo al alcance de un clic.</p>
+    <p class="footer-copy">© 2026 Karin's Market — Proyecto académico de consumo de API con JavaScript.</p>
+  </div>
+</footer>
+
+<script src="script_api.js"></script>
+</body>
+</html>
