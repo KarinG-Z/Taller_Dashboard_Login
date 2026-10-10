@@ -1,11 +1,7 @@
-// ==========================================================
-// SESIÓN: protección del dashboard (Sesión 4)
-// Debe ejecutarse antes que cualquier otra cosa del archivo.
-// ==========================================================
+
 const PAGINA_LOGIN = "login.html";
 const API_ME = "https://dummyjson.com/auth/me";
 
-// El accessToken es un JWT: su parte central trae la fecha de expiración (exp, en segundos)
 function tokenVigente() {
   const token = localStorage.getItem("token");
   if (!token) return false;
@@ -27,7 +23,7 @@ function cerrarSesion(expirada) {
 
 if (!tokenVigente()) {
   const habiaToken = localStorage.getItem("token") !== null;
-  document.documentElement.style.display = "none"; // no mostrar el dashboard ni un instante
+  document.documentElement.style.display = "none"; // no mostrar el dashboard 
   cerrarSesion(habiaToken);
 }
 
@@ -36,17 +32,12 @@ setInterval(function () {
   if (!tokenVigente()) cerrarSesion(true);
 }, 60 * 1000);
 
-// Si el navegador restaura la página desde caché (botón "Atrás") se vuelve a validar
+
 window.addEventListener("pageshow", function (e) {
   if (e.persisted && !tokenVigente()) cerrarSesion(true);
 });
 
 
-// ==========================================================
-// DATOS POR USUARIO
-// Cada usuario tiene su propio carrito, favoritos, pedidos y foto:
-// carrito_<id>, favoritos_<id>, pedidos_<id>, foto_<id>
-// ==========================================================
 const API = "https://dummyjson.com/products";
 const ENVIO_GRATIS = 50;          // monto desde el cual el envío es gratis
 const CAT_FAVORITOS = "__favoritos";
@@ -89,7 +80,7 @@ let favoritos = [];        // ids de productos favoritos del usuario
 let pedidos = [];          // historial de compras del usuario
 let categoriaActiva = "";  // categoría (pasillo) seleccionada; "" = todas
 
-// Íconos SVG
+
 const ICON_STAR = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.6L22 9.5l-5 4.9 1.2 7.1L12 18.1l-6.2 3.4L7 14.4 2 9.5l7.1-.9z"/></svg>`;
 const ICON_HEART = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>`;
 const ICON_BAG_PLUS = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8V6a6 6 0 0 1 12 0v2"/><path d="M4 8h16l-1.2 12.2A2 2 0 0 1 16.82 22H7.18a2 2 0 0 1-1.98-1.8L4 8z"/><path d="M12 11v5M9.5 13.5h5"/></svg>`;
@@ -97,7 +88,7 @@ const ICON_TRASH = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
 const ICON_SEARCH_EMPTY = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="6.5"/><path d="M20 20l-4.8-4.8"/></svg>`;
 const ICON_BAG_EMPTY = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8V6a6 6 0 0 1 12 0v2"/><path d="M4 8h16l-1.2 12.2A2 2 0 0 1 16.82 22H7.18a2 2 0 0 1-1.98-1.8L4 8z"/></svg>`;
 
-// Evita que texto de la API se interprete como HTML
+
 function escaparHTML(texto) {
   return String(texto).replace(/[&<>"']/g, c => ({
     "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
@@ -116,9 +107,7 @@ function mostrarToast(texto, tipo) {
   }, 3200);
 }
 
-// ----------------------------------------------------------
-// consultar la API y mostrar productos
-// ----------------------------------------------------------
+
 async function listarProductos() {
   const contenedor = document.getElementById("resultado");
   contenedor.innerHTML = '<div class="skeleton"></div>'.repeat(8);
@@ -189,10 +178,6 @@ function mostrarProductos(lista) {
   contenedor.innerHTML = resultado;
 }
 
-
-// ----------------------------------------------------------
-// Pasillos (categorías) y favoritos
-// ----------------------------------------------------------
 function renderCategorias() {
   const cont = document.getElementById("categorias");
   const unicas = [...new Set(productos.map(p => p.category))];
@@ -213,7 +198,6 @@ function filtrarCategoria(categoria) {
   mostrarProductos(obtenerListaBase());
 }
 
-// Devuelve el arreglo de productos respetando el pasillo activo
 function obtenerListaBase() {
   if (categoriaActiva === CAT_FAVORITOS) return productos.filter(p => favoritos.includes(p.id));
   if (!categoriaActiva) return productos;
@@ -245,7 +229,6 @@ function toggleFavorito(id) {
 }
 
 
-// búsqueda por nombre (respeta el pasillo activo)
 function buscarProductos() {
   const texto = document.getElementById("buscar").value.toLowerCase();
   const filtrados = obtenerListaBase().filter(p =>
@@ -254,7 +237,6 @@ function buscarProductos() {
   mostrarProductos(filtrados);
 }
 
-// ordenar por precio (respeta el pasillo activo)
 function ordenarProductos() {
   const tipo = document.getElementById("ordenar").value;
   let ordenados = [...obtenerListaBase()];
@@ -267,15 +249,12 @@ function ordenarProductos() {
 }
 
 
-// ----------------------------------------------------------
-// Carrito (por usuario)
-// ----------------------------------------------------------
 function stockDe(id) {
   const producto = productos.find(p => p.id === id);
   return producto ? producto.stock : Infinity;
 }
 
-// agregar productos al carrito. Evita duplicados: si ya existe, aumenta la cantidad (sin pasar el stock).
+
 function agregarCarrito(id) {
   const producto = productos.find(p => p.id === id);
   if (!producto) return;
@@ -357,7 +336,7 @@ function calcularTotal() {
   return carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
 }
 
-// Barra de progreso hacia el envío gratis
+
 function renderEnvio(total) {
   const el = document.getElementById("envio-progreso");
   if (carrito.length === 0) {
@@ -425,9 +404,6 @@ function cargarCarritoGuardado() {
 }
 
 
-// ----------------------------------------------------------
-// Compra e historial de pedidos (por usuario)
-// ----------------------------------------------------------
 function finalizarCompra() {
   if (carrito.length === 0) {
     mostrarMensajeCompra("Tu carrito está vacío. Agrega productos antes de finalizar la compra.", "error");
@@ -526,9 +502,6 @@ function repetirPedido(id) {
 }
 
 
-// ----------------------------------------------------------
-// Usuario autenticado, foto de perfil y menú
-// ----------------------------------------------------------
 function mostrarUsuario() {
   const usuario = obtenerUsuario();
   if (!usuario) return;
@@ -546,13 +519,12 @@ function mostrarUsuario() {
   aplicarFoto();
 }
 
-// La foto propia (guardada en este navegador) tiene prioridad sobre la de la API
 function aplicarFoto() {
   const usuario = obtenerUsuario();
   if (!usuario) return;
 
   const propia = leerDatos("foto", null);
-  const origen = propia || usuario.image;
+  const origen = propia || "assets/Karin.jpeg";
 
   document.getElementById("fotoUsuario").src = origen;
   document.getElementById("perfilFoto").src = origen;
@@ -631,7 +603,6 @@ function cerrarPerfil() {
   document.getElementById("user-btn").setAttribute("aria-expanded", "false");
 }
 
-// cerrar menús al hacer clic fuera o presionar Escape
 document.addEventListener("click", function (e) {
   if (!e.target.closest("#user-menu")) cerrarPerfil();
 });
@@ -644,7 +615,6 @@ document.addEventListener("keydown", function (e) {
   }
 });
 
-// Consulta /auth/me con el token (Authorization: Bearer) para confirmar que la sesión es válida
 async function verificarSesion() {
   const token = localStorage.getItem("token");
   if (!token) {
@@ -674,11 +644,10 @@ async function verificarSesion() {
   }
 }
 
-// al cargar la página: se valida la sesión, se muestra el usuario, se recupera su carrito y se listan los productos.
 window.onload = function () {
   verificarSesion();
   mostrarUsuario();
-  cargarCarritoGuardado();   // antes de listar: los favoritos deben estar listos para pintar los corazones
+  cargarCarritoGuardado();
   listarProductos();
 
   document.getElementById("buscar").addEventListener("keydown", function (e) {

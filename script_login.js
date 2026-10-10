@@ -2,7 +2,6 @@ const API_LOGIN = "https://dummyjson.com/auth/login";
 const API_USUARIOS = "https://dummyjson.com/users/filter";
 const PAGINA_DASHBOARD = "index_api.html";
 
-/* Si ya hay una sesión guardada, no tiene sentido mostrar el login */
 if (localStorage.getItem("token")) {
   window.location.replace(PAGINA_DASHBOARD);
 }
@@ -23,14 +22,7 @@ function alternarPassword(idCampo, idBoton) {
   boton.setAttribute("aria-pressed", String(!visible));
 }
 
-function usarCuentaDemo() {
-  document.getElementById("usuario").value = "emilys";
-  document.getElementById("password").value = "emilyspass";
-  mostrarMensaje("", "");
-}
-
 async function iniciarSesion(evento) {
-  // El formulario llama a esta función con el evento: evitamos que recargue la página
   if (evento) evento.preventDefault();
 
   const usuario = document.getElementById("usuario").value.trim();
@@ -46,12 +38,16 @@ async function iniciarSesion(evento) {
     boton.disabled = true;
     mostrarMensaje("Validando usuario...", "info");
 
+    if (usuario !== "Karin" || password !== "Karin2913") {
+      throw new Error("Credenciales incorrectas");
+    }
+
     const respuesta = await fetch(API_LOGIN, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        username: usuario,
-        password: password,
+        username: "emilys",
+        password: "emilyspass",
         expiresInMins: 30
       })
     });
@@ -61,7 +57,7 @@ async function iniciarSesion(evento) {
     }
 
     const datos = await respuesta.json();
-    console.log(datos);
+
 
     localStorage.setItem("token", datos.accessToken);
 
@@ -69,11 +65,11 @@ async function iniciarSesion(evento) {
       "usuario",
       JSON.stringify({
         id: datos.id,
-        username: datos.username,
-        firstName: datos.firstName,
-        lastName: datos.lastName,
-        email: datos.email,
-        image: datos.image
+        username: "Karin",
+        firstName: "Karin",
+        lastName: "",
+        email: "",
+        image: "assets/Karin.jpeg"
       })
     );
 
@@ -94,15 +90,6 @@ async function iniciarSesion(evento) {
   }
 }
 
-
-/* ==========================================================
-   RECUPERAR CONTRASEÑA (simulada)
-   DummyJSON no envía correos ni cambia contraseñas, así que:
-   1) se comprueba que la cuenta exista con /users/filter,
-   2) el código de verificación se genera en el navegador y se
-      muestra en pantalla (modo demostración),
-   3) el cambio de contraseña es solo una simulación.
-   ========================================================== */
 let recuperacion = { encontrada: false, usuario: "", correo: "", codigo: "", intentos: 0 };
 
 function mostrarVista(vista) {
@@ -153,7 +140,7 @@ async function recuperarPaso1(evento) {
     mostrarMensaje("Buscando tu cuenta...", "info", "rec-mensaje");
 
     const clave = texto.includes("@") ? "email" : "username";
-    const url = API_USUARIOS + "?key=" + clave + "&value=" + encodeURIComponent(texto) + "&select=username,email";
+    const url = API_USUARIOS + "?key=" + clave + "&value=" + encodeURIComponent(texto === "Karin" ? "emilys" : texto) + "&select=username,email";
     const respuesta = await fetch(url);
     if (!respuesta.ok) throw new Error("Error " + respuesta.status);
 
@@ -162,13 +149,12 @@ async function recuperarPaso1(evento) {
 
     recuperacion = {
       encontrada: Boolean(cuenta),
-      usuario: cuenta ? cuenta.username : "",
+      usuario: cuenta ? (texto === "Karin" ? "Karin" : cuenta.username) : "",
       correo: cuenta ? cuenta.email : "",
       codigo: cuenta ? generarCodigo() : "",
       intentos: 0
     };
 
-    // Mensaje genérico: no revela si la cuenta existe (buena práctica de seguridad)
     document.getElementById("rec-info").textContent =
       "Si los datos coinciden con una cuenta, enviamos un código de 6 dígitos a " +
       (cuenta ? enmascararCorreo(cuenta.email) : "tu correo") + ".";
@@ -214,7 +200,6 @@ function recuperarPaso2(evento) {
   mostrarMensaje("Código incorrecto. Te quedan " + (3 - recuperacion.intentos) + " intento(s).", "error", "rec-mensaje");
 }
 
-// Puntúa la contraseña de 0 a 4 según longitud, mayúsculas/minúsculas, números y símbolos
 function puntuarPassword(texto) {
   let puntos = 0;
   if (texto.length >= 8) puntos++;
@@ -262,7 +247,6 @@ function recuperarPaso3(evento) {
   document.getElementById("password").focus();
 }
 
-/* Si el dashboard nos envió aquí porque la sesión venció, lo explicamos */
 if (new URLSearchParams(window.location.search).get("sesion") === "expirada") {
   mostrarMensaje("Tu sesión expiró. Inicia sesión de nuevo.", "info");
 }

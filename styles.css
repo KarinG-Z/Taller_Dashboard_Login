@@ -1,12 +1,12 @@
 :root {
-  --bg-1: #251440;
-  --bg-2: #35205A;
-  --bg-3: #44286E;
+  --bg-1: #F3E8FF;
+  --bg-2: #EBDDFA;
+  --bg-3: #E2CEF5;
   --panel: rgba(255, 255, 255, 0.95);
   --ink: #2B1642;
   --ink-soft: #7B6690;
-  --ink-invert: #F6EFFF;
-  --ink-soft-invert: #DCC8F2;
+  --ink-invert: #2B1642;
+  --ink-soft-invert: #665078;
   --violet: #B07CF0;
   --violet-deep: #5E1F97;
   --pink: #FF8CBF;
@@ -14,7 +14,7 @@
   --gold: #F2CF85;
   --gold-soft: #FBEFC9;
   --lilac-soft: #F4E9FC;
-  --line-invert: rgba(255, 255, 255, 0.14);
+  --line-invert: rgba(94, 31, 151, 0.18);
   --holo: linear-gradient(135deg, var(--violet) 0%, var(--pink) 55%, var(--gold) 100%);
   --radius: 22px;
   --radius-sm: 14px;
@@ -71,7 +71,7 @@ h3 {
   position: sticky;
   top: 0;
   z-index: 40;
-  background: rgba(37, 20, 64, 0.85);
+  background: rgba(243, 232, 255, 0.95);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--line-invert);
   padding: 12px clamp(16px, 4vw, 48px);
@@ -101,7 +101,7 @@ h3 {
   justify-content: center;
   background: rgba(255, 255, 255, 0.07);
   border: 1.5px solid var(--line-invert);
-  color: var(--gold);
+  color: var(--violet-deep);
 }
 
 .logo-mark svg {
@@ -161,7 +161,7 @@ h3 {
   position: sticky;
   top: var(--nav-h);
   z-index: 35;
-  background: rgba(37, 20, 64, 0.7);
+  background: rgba(235, 221, 250, 0.95);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line-invert);
   padding: 10px clamp(16px, 4vw, 48px);
@@ -308,7 +308,7 @@ h3 {
 .badge-item svg {
   width: 18px;
   height: 18px;
-  color: var(--gold);
+  color: var(--violet-deep);
   flex-shrink: 0;
 }
 
@@ -333,7 +333,7 @@ input[type="text"]::placeholder {
 input[type="text"]:focus,
 select:focus {
   outline: none;
-  border-color: var(--gold);
+  border-color: var(--violet-deep);
   background: rgba(255, 255, 255, 0.12);
   box-shadow: 0 0 0 4px rgba(234, 193, 90, 0.18);
 }
@@ -594,7 +594,7 @@ main {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: var(--gold);
+  color: var(--violet-deep);
   font-weight: 700;
 }
 
@@ -656,7 +656,7 @@ main {
 
 .sin-resultados svg,
 .carrito-vacio svg {
-  color: var(--gold);
+  color: var(--violet-deep);
 }
 
 .sin-resultados svg {
@@ -694,7 +694,7 @@ aside#carrito-panel.cart-drawer {
   right: 0;
   height: 100vh;
   width: min(400px, 92vw);
-  background: rgba(38, 22, 66, 0.98);
+  background: rgba(243, 232, 255, 0.98);
   backdrop-filter: blur(18px);
   border-left: 1.5px solid var(--line-invert);
   box-shadow: -20px 0 50px rgba(0, 0, 0, 0.4);
@@ -730,7 +730,7 @@ aside#carrito-panel.cart-drawer.abierto {
 .cart-drawer-header h2 svg {
   width: 20px;
   height: 20px;
-  color: var(--gold);
+  color: var(--violet-deep);
 }
 
 .cerrar-carrito {
@@ -860,7 +860,7 @@ aside#carrito-panel.cart-drawer.abierto {
 
 .subtotal {
   font-weight: 700;
-  color: var(--gold-soft);
+  color: var(--ink);
   font-size: 13px;
 }
 
@@ -1105,7 +1105,7 @@ footer p {
 }
 
 .login-input:focus-within {
-  border-color: var(--gold);
+  border-color: var(--violet-deep);
   background: rgba(255, 255, 255, 0.12);
   box-shadow: 0 0 0 4px rgba(234, 193, 90, 0.18);
 }
@@ -1139,14 +1139,14 @@ footer p {
 .login-card .login-ver {
   padding: 8px 18px 8px 8px;
   background: transparent;
-  color: var(--gold);
+  color: var(--violet-deep);
   font-size: 12.5px;
   border-radius: 999px;
 }
 
 .login-card .login-ver:hover {
   transform: none;
-  color: var(--gold-soft);
+  color: var(--ink);
 }
 
 .login-card button:focus-visible,
@@ -1176,7 +1176,7 @@ footer p {
 }
 
 .login-mensaje.ok {
-  color: var(--gold);
+  color: var(--violet-deep);
 }
 
 .login-demo {
@@ -1190,14 +1190,14 @@ footer p {
 }
 
 .login-demo strong {
-  color: var(--gold-soft);
+  color: var(--ink);
 }
 
 .login-card .login-demo button {
   margin-top: 6px;
   padding: 2px 8px;
   background: transparent;
-  color: var(--gold);
+  color: var(--violet-deep);
   font-size: 12.5px;
   text-decoration: underline;
   border-radius: 8px;
@@ -1263,7 +1263,7 @@ footer p {
   align-items: center;
   gap: 14px;
   padding: 22px 20px 20px;
-  background: rgba(38, 22, 66, 0.98);
+  background: rgba(243, 232, 255, 0.98);
   border: 1.5px solid var(--line-invert);
   border-radius: var(--radius);
   box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
@@ -1392,7 +1392,7 @@ main { padding-bottom: 96px; }
   border: 1px solid var(--line-invert);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.06);
-  color: var(--gold);
+  color: var(--violet-deep);
   font-size: 12.5px;
   font-weight: 700;
   letter-spacing: .02em;
@@ -1480,7 +1480,7 @@ main { padding-bottom: 96px; }
   color: var(--ink-soft-invert);
 }
 
-.envio strong { color: var(--gold-soft); }
+.envio strong { color: var(--ink); }
 
 .envio-barra {
   height: 8px;
@@ -1515,7 +1515,7 @@ main { padding-bottom: 96px; }
 .toast {
   padding: 12px 18px;
   border-radius: 16px;
-  background: rgba(38, 22, 66, 0.97);
+  background: rgba(243, 232, 255, 0.97);
   border: 1.5px solid rgba(242, 207, 133, 0.5);
   color: var(--ink-invert);
   font-size: 13px;
@@ -1551,7 +1551,7 @@ main { padding-bottom: 96px; }
   max-height: min(82vh, 720px);
   display: flex;
   flex-direction: column;
-  background: rgba(38, 22, 66, 0.98);
+  background: rgba(243, 232, 255, 0.98);
   border: 1.5px solid var(--line-invert);
   border-radius: var(--radius);
   box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
@@ -1613,7 +1613,7 @@ main { padding-bottom: 96px; }
 .pedido-total {
   font-family: 'Unbounded', sans-serif;
   font-weight: 600;
-  color: var(--gold-soft);
+  color: var(--ink);
 }
 
 .pedido .secondary { padding: 8px 16px; font-size: 12.5px; }
@@ -1624,7 +1624,7 @@ main { padding-bottom: 96px; }
   padding: 2px 10px;
   border-radius: 999px;
   background: rgba(242, 207, 133, 0.16);
-  color: var(--gold-soft);
+  color: var(--ink);
   font-size: 11px;
   font-weight: 700;
 }
@@ -1696,7 +1696,7 @@ main { padding-bottom: 96px; }
   margin: -4px 6px 14px auto;
   padding: 2px 6px;
   background: transparent;
-  color: var(--gold);
+  color: var(--violet-deep);
   font-size: 12.5px;
   text-decoration: underline;
   border-radius: 8px;
@@ -1742,7 +1742,7 @@ main { padding-bottom: 96px; }
 }
 
 .demo-box strong {
-  color: var(--gold-soft);
+  color: var(--ink);
   font-family: 'Unbounded', sans-serif;
   font-size: 15px;
   letter-spacing: .14em;
@@ -1816,3 +1816,6 @@ main { padding-bottom: 96px; }
   .user-btn { padding: 4px; }
   .user-btn .chev { display: none; }
 }
+
+/* Contraste de los detalles sobre el fondo lila claro. */
+.eyebrow, .logo-mark { color: var(--violet-deep); }
